@@ -1,4 +1,202 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Kalki AI</title>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <style>
+         body {
+             font-family: Georgia, serif;
+             background: url('bg.png') no-repeat center center fixed;
+             background-size: cover;
+             color: #e0e0e0;
+         }
+         
+         .overlay {
+             background-color: rgba(18, 18, 18, 0.8);
+             min-height: 100vh;
+             padding: 20px;
+         }
+ 
+         .card {
+             background-color: #1e1e1e;
+             border: none;
+             border-radius: 15px;
+         }
+ 
+         .card-header {
+             background-color: #2a2a2a;
+             border: none;
+             border-top-left-radius: 15px;
+             border-top-right-radius: 15px;
+         }
+ 
+         .btn-orange {
+             background-color: #ff6a00;
+             border-color: #ff6a00;
+             color: white;
+             border-radius: 25px;
+             padding: 10px 20px;
+             transition: all 0.3s ease;
+         }
+ 
+         .btn-orange:hover {
+             background-color: #ff8c00;
+             border-color: #ff8c00;
+             color: white;
+             transform: scale(1.02);
+         }
+ 
+         .form-control {
+             background-color: #2a2a2a;
+             border: none;
+             color: #e0e0e0;
+             border-radius: 25px;
+         }
+ 
+         .form-control:focus {
+             background-color: #2a2a2a;
+             color: #e0e0e0;
+             box-shadow: 0 0 0 0.2rem rgba(255, 106, 0, 0.25);
+         }
+ 
+         .result {
+             background-color: #2a2a2a;
+             border-radius: 15px;
+             padding: 15px;
+             margin-top: 20px;
+             min-height: 100px;
+         }
+ 
+         /* Custom Scrollbar */
+         ::-webkit-scrollbar {
+             width: 8px;
+         }
+ 
+         ::-webkit-scrollbar-track {
+             background: #1a1a1a;
+         }
+ 
+         ::-webkit-scrollbar-thumb {
+             background-color: #ff6a00;
+             border-radius: 4px;
+         }
+ 
+         footer {
+             background-color: rgba(30, 30, 30, 0.9);
+             padding: 20px 0;
+             margin-top: 20px;
+             border-radius: 15px;
+         }
+ 
+         .social-icons a {
+             color: #e0e0e0;
+             margin: 0 10px;
+             text-decoration: none;
+             transition: all 0.3s ease;
+         }
+ 
+         .social-icons a:hover {
+             color: #ff6a00;
+             transform: scale(1.1);
+         }
+ 
+         /* Responsiveness */
+         @media (max-width: 768px) {
+             .container {
+                 padding-left: 15px;
+                 padding-right: 15px;
+             }
+             .card {
+                 border-radius: 10px;
+             }
+             .btn-orange {
+                 padding: 8px 15px;
+                 font-size: 0.9rem;
+             }
+             .form-control {
+                 border-radius: 20px;
+                 padding: 10px;
+             }
+         }
+     </style>
+ </head>
+ <body>
+     <div class="overlay">
+         <div class="container py-3">
+             <div class="row justify-content-center">
+                 <div class="col-md-8">
+                     <div class="card shadow-lg">
+                         <div class="card-header d-flex justify-content-between align-items-center">
+                             <h1 class="h3 mb-0">Kalki AI</h1>
+                             <img src="Designer.png" width="40" height="40" alt="Kalki AI Logo" class="rounded-circle">
+                         </div>
+                         <div class="card-body">
+                             <div class="mb-3">
+                                 <label for="prompt" class="form-label">Ask Me Anything:</label>
+                                 <textarea class="form-control" id="prompt" rows="3" placeholder="Type your prompt here..."></textarea>
+                             </div>
+                             <button onclick="generateText()" class="btn btn-orange w-100">Generate</button>
+                             <div class="result" id="result"></div>
+                         </div>
+                     </div>
+ 
+                     <footer>
+                         <div class="container">
+                             <p class="text-center mb-2">Powered by Gemini AI</p>
+                             <p class="text-center mb-3">Credits: <a href="https://kalkeesh.github.io/" class="text-light">Kalkeesh Jami</a></p>
+                             <div class="social-icons text-center">
+                                 <a href="https://github.com/kalkeesh" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+                                 <a href="https://www.linkedin.com/in/kalkeesh-jami-42891b260/" target="_blank"><i class="fab fa-linkedin fa-2x"></i></a>
+                                 <a href="https://www.instagram.com/kalkii._._/" target="_blank"><i class="fab fa-instagram fa-2x"></i></a>
+                                 <a href="https://kalkeesh.github.io/" target="_blank"><i class="fas fa-briefcase fa-2x"></i></a>
+                             </div>
+                         </div>
+                     </footer>
+                 </div>
+             </div>
+         </div>
+     </div>
+ 
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+     <script>
+         async function generateText() {
+             const prompt = document.getElementById('prompt').value;
+             const result = document.getElementById('result');
+ 
+             try {
+                 result.innerText = '';
+ 
+                 const response = await fetch('https://kalki-ai-six.vercel.app/generate', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json'
+                     },
+                     body: JSON.stringify({ prompt })
+                 });
+                 
+                 const data = await response.json();
+                 const decodedText = atob(data.text);
+                 result.innerText = decodedText;
+             } catch (error) {
+                 result.innerText = 'An error occurred while generating the response.';
+             }
+         }
+ 
+         document.getElementById('prompt').addEventListener('keypress', function(event) {
+             if (event.key === 'Enter' && !event.shiftKey) {
+                 event.preventDefault();
+                 generateText();
+             }
+         });
+     </script>
+ </body>
+ </html>
+ 
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -145,5 +343,4 @@
         }
     </script>
 </body>
-
-</html>
+</html> -->
